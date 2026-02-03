@@ -11,3 +11,5 @@ Please also review our [Conventions](https://github.com/Splunk-SOAR-Apps/.github
 ## Legal and License
 
 This SOAR App is licensed under the Apache 2.0 license. Please see our [Contributing Guide](https://github.com/Splunk-SOAR-Apps/.github/blob/main/.github/CONTRIBUTING.md#legal-notice) for further details.
+
+## Test

@@ -1,5 +1,5 @@
 [project]
-name = "NetApp Ransomware Resilience"
+name = "netapp-ransomware-resilience"
 version = "1.0.0"
 description = "A comprehensive Splunk SOAR integration for NetApp Ransomware Resilience Service, enabling automated threat response and data protection actions through SOAR playbooks."
 license = "Copyright (c) 2026 Splunk Inc."

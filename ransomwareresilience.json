@@ -1,0 +1,9 @@
+{
+    "name": "NetApp Ransomware Resilience",
+    "license": "Apache-2.0",
+    "contributors": [
+      {
+        "name": "Rony Varghese P"
+      }
+    ]
+}

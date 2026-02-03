@@ -1,15 +1,24 @@
-# Splunk SOAR
+# NetApp Ransomware Resilience
 
-Welcome to the open-source repository for Splunk SOAR's netappransomwareresilience App.
+Publisher: <br>
+Connector Version: <br>
+Product Vendor: <br>
+Product Name: <br>
+Minimum Product Version:
 
-## Contributing
+______________________________________________________________________
 
-Please have a look at our [Contributing Guide](https://github.com/Splunk-SOAR-Apps/.github/blob/main/.github/CONTRIBUTING.md) for guidelines if you are interested in contributing, raising issues, or learning more about open-source SOAR apps.
+Auto-generated Splunk SOAR Connector documentation.
 
-Please also review our [Conventions](https://github.com/Splunk-SOAR-Apps/.github/blob/main/.github/CONTRIBUTING.md) to ensure you follow up-to-date standards.
+Copyright 2026 Splunk Inc.
 
-## Legal and License
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-This SOAR App is licensed under the Apache 2.0 license. Please see our [Contributing Guide](https://github.com/Splunk-SOAR-Apps/.github/blob/main/.github/CONTRIBUTING.md#legal-notice) for further details.
+http://www.apache.org/licenses/LICENSE-2.0
 
-## Test 2
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations under the License.

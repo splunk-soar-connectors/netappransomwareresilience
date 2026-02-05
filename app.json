@@ -1,9 +1,214 @@
 {
+    "appid": "8612e34c-5341-49d3-8a57-81465ca4f06c",
     "name": "NetApp Ransomware Resilience",
+    "description": "This app integrates with NetApp Ransomware Resilience Service to provide automated threat response and data protection capabilities",
+    "type": "information",
+    "product_vendor": "NetApp",
+    "logo": "logo.svg",
+    "logo_dark": "logo_dark.svg",
+    "product_name": "Ransomware Resilience Service",
+    "python_version": "3",
+    "fips_compliant": false,
+    "product_version_regex": ".*",
+    "publisher": "NetApp",
     "license": "Apache-2.0",
+    "app_version": "1.0.0",
+    "utctime_updated": "2026-02-05T00:00:00.000000Z",
+    "package_name": "phantom_netappransomwareresilience",
+    "main_module": "src.app",
+    "min_phantom_version": "6.3.0",
+    "app_wizard_version": "1.0.0",
+    "configuration": {
+        "client_id": {
+            "description": "OAuth Client ID",
+            "data_type": "string",
+            "required": true,
+            "order": 0
+        },
+        "client_secret": {
+            "description": "OAuth Client Secret",
+            "data_type": "password",
+            "required": true,
+            "order": 1
+        },
+        "base_url": {
+            "description": "Base URL for NetApp RRS API",
+            "data_type": "string",
+            "required": true,
+            "default": "https://api.cloud.netapp.com",
+            "order": 2
+        }
+    },
+    "actions": [
+        {
+            "action": "test connectivity",
+            "identifier": "test_connectivity",
+            "description": "Validate the asset configuration for connectivity using supplied configuration",
+            "type": "test",
+            "read_only": true,
+            "parameters": {},
+            "output": [],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "enrich ip",
+            "identifier": "enrich_ip_address",
+            "description": "Enrich IP address information using NetApp RRS",
+            "type": "investigate",
+            "read_only": true,
+            "parameters": {
+                "ip_address": {
+                    "description": "IP address to enrich",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": ["ip"],
+                    "order": 0
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.jobs",
+                    "data_type": "string"
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "enrich storage",
+            "identifier": "enrich_storage",
+            "description": "Enrich storage information using NetApp RRS",
+            "type": "investigate",
+            "read_only": true,
+            "parameters": {
+                "agent_id": {
+                    "description": "Agent ID",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 0
+                },
+                "system_id": {
+                    "description": "System ID",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 1
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.volumes",
+                    "data_type": "string"
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "take snapshot",
+            "identifier": "take_snapshot",
+            "description": "Take a snapshot of a volume",
+            "type": "generic",
+            "read_only": false,
+            "parameters": {
+                "volume_id": {
+                    "description": "Volume ID",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 0
+                },
+                "agent_id": {
+                    "description": "Agent ID",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 1
+                },
+                "system_id": {
+                    "description": "System ID",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.job_id",
+                    "data_type": "string"
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "volume offline",
+            "identifier": "volume_offline",
+            "description": "Take a volume offline",
+            "type": "contain",
+            "read_only": false,
+            "parameters": {
+                "volume_id": {
+                    "description": "Volume ID",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 0
+                },
+                "agent_id": {
+                    "description": "Agent ID",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 1
+                },
+                "system_id": {
+                    "description": "System ID",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.job_id",
+                    "data_type": "string"
+                }
+            ],
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "get job status",
+            "identifier": "check_job_status",
+            "description": "Get the status of a job",
+            "type": "investigate",
+            "read_only": true,
+            "parameters": {
+                "job_id": {
+                    "description": "Job ID",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 0
+                },
+                "agent_id": {
+                    "description": "Agent ID",
+                    "data_type": "string",
+                    "required": true,
+                    "order": 1
+                },
+                "source": {
+                    "description": "Source of the request",
+                    "data_type": "string",
+                    "required": true,
+                    "default": "soar",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.data.*.status",
+                    "data_type": "string"
+                }
+            ],
+            "versions": "EQ(*)"
+        }
+    ],
     "contributors": [
-      {
-        "name": "Rony Varghese P"
-      }
+        {
+            "name": "Rony Varghese P"
+        }
     ]
 }

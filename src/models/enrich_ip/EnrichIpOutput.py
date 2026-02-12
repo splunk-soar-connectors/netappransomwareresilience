@@ -25,6 +25,8 @@ class JobItem(ActionOutput):
 
     job_id: str
     status: str
+    source: str
+    agent_id: str
 
 
 class EnrichIpOutput(ActionOutput):

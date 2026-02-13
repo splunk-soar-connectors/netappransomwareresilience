@@ -78,7 +78,8 @@ app.register_action(
     identifier="enrich_ip_address",
     description="Enrich IP address with additional information",
     action_type="investigate",
-    read_only=True,
+    view_handler="view_handlers.enrich_ip_view:render_enrich_ip_jobs_handler",
+    view_template="enrich_ip_results.html",
     params_class=EnrichIpParams,
     output_class=EnrichIpOutput,
 )

@@ -11,18 +11,4 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from pathlib import Path
-import sys
-
-# Add current directory to path
-sys.path.insert(0, str(Path(__file__).parent))
-
-from . import app
-from . import actions
-from . import config
-from . import models
-from . import services
-from . import utils
-from . import view_handlers
-
-__ALL__ = [app, actions, config, models, services, utils, view_handlers]
+"""View handlers for NetApp RPS SOAR app."""

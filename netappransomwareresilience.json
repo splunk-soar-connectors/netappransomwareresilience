@@ -7,7 +7,7 @@
     "logo": "logo.svg",
     "logo_dark": "logo_dark.svg",
     "product_name": "Ransomware Resilience Service",
-    "python_version": "3",
+    "python_version": "3.13",
     "fips_compliant": false,
     "product_version_regex": ".*",
     "publisher": "NetApp",

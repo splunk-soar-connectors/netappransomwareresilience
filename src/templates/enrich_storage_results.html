@@ -14,16 +14,16 @@
  limitations under the License.
 -->
 {% extends 'base/header.html' %}
-{% block title %}IP Enrichment Results{% endblock %}
+{% block title %}Storage Enrichment Results{% endblock %}
 {% block widget_content %}
   <style>
-    .enrich-ip-summary {
+    .enrich-storage-summary {
         margin-bottom: 20px;
         padding: 12px;
         border-left: 4px solid;
         border-radius: 4px;
     }
-    .enrich-ip-table {
+    .enrich-storage-table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
@@ -31,10 +31,10 @@
         border-radius: 8px;
         overflow: hidden;
     }
-    .enrich-ip-table thead {
+    .enrich-storage-table thead {
         background-color: rgba(0, 0, 0, 0.05);
     }
-    .enrich-ip-table th {
+    .enrich-storage-table th {
         padding: 12px;
         text-align: left;
         font-weight: 600;
@@ -43,26 +43,18 @@
         letter-spacing: 0.5px;
         border-bottom: 2px solid;
     }
-    .enrich-ip-table td {
+    .enrich-storage-table td {
         padding: 12px;
         border-bottom: 1px solid;
     }
-    .enrich-ip-table tbody tr:last-child td {
+    .enrich-storage-table tbody tr:last-child td {
         border-bottom: none;
     }
-    .enrich-ip-table code {
+    .enrich-storage-table code {
         font-family: 'Courier New', monospace;
         padding: 2px 6px;
         border-radius: 3px;
         font-size: 13px;
-    }
-    .status-badge {
-        display: inline-block;
-        padding: 4px 12px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
     }
     .empty-state {
         text-align: center;
@@ -74,40 +66,34 @@
     }
   </style>
   <div>
-    {% if jobs %}
-      <div class="enrich-ip-summary">
-        <strong>Total Jobs:</strong> {{ jobs|length }}
+    {% if volumes %}
+      <div class="enrich-storage-summary">
+        <strong>Total Volumes:</strong> {{ volumes|length }}
       </div>
-      <table class="enrich-ip-table">
+      <table class="enrich-storage-table">
         <thead>
           <tr>
-            <th>Job ID</th>
-            <th>Status</th>
-            <th>Source</th>
-            <th>Agent ID</th>
+            <th>Volume UUID</th>
+            <th>Volume Name</th>
+            <th>SVM Name</th>
           </tr>
         </thead>
         <tbody>
-          {% for job in jobs %}
+          {% for volume in volumes %}
             <tr>
               <td>
-                <code>{{ job.job_id }}</code>
+                <code>{{ volume.volume_uuid }}</code>
               </td>
-              <td>
-                <span class="status-badge status-{{ job.status|lower }}">{{ job.status }}</span>
-              </td>
-              <td>{{ job.source }}</td>
-              <td>
-                <code>{{ job.agent_id }}</code>
-              </td>
+              <td>{{ volume.volume_name }}</td>
+              <td>{{ volume.svm_name }}</td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
     {% else %}
       <div class="empty-state">
-        <div class="empty-state-icon">📭</div>
-        <p>No enrichment jobs found.</p>
+        <div class="empty-state-icon">📦</div>
+        <p>No volumes found.</p>
       </div>
     {% endif %}
   </div>

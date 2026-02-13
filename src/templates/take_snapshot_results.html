@@ -1,0 +1,85 @@
+<!--
+ Copyright (c) 2026 Splunk Inc.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+{% extends 'base/header.html' %}
+{% block title %}Snapshot Job Created{% endblock %}
+{% block widget_content %}
+  <style>
+    .job-info-card {
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid;
+        margin-bottom: 20px;
+    }
+    .job-info-row {
+        display: flex;
+        padding: 12px 0;
+        border-bottom: 1px solid;
+    }
+    .job-info-row:last-child {
+        border-bottom: none;
+    }
+    .job-info-label {
+        font-weight: 600;
+        width: 150px;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+    }
+    .job-info-value {
+        flex: 1;
+    }
+    .job-info-value code {
+        font-family: 'Courier New', monospace;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 13px;
+    }
+    .status-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+  </style>
+  <div>
+    <div class="job-info-card">
+      <div class="job-info-row">
+        <div class="job-info-label">Job ID</div>
+        <div class="job-info-value">
+          <code>{{ job_id }}</code>
+        </div>
+      </div>
+      <div class="job-info-row">
+        <div class="job-info-label">Status</div>
+        <div class="job-info-value">
+          <span class="status-badge status-{{ status|lower }}">{{ status }}</span>
+        </div>
+      </div>
+      <div class="job-info-row">
+        <div class="job-info-label">Source</div>
+        <div class="job-info-value">{{ source }}</div>
+      </div>
+      <div class="job-info-row">
+        <div class="job-info-label">Agent ID</div>
+        <div class="job-info-value">
+          <code>{{ agent_id }}</code>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

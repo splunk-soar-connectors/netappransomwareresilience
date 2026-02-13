@@ -84,18 +84,6 @@ app.register_action(
     output_class=EnrichIpOutput,
 )
 
-# Register job status action
-app.register_action(
-    "actions.job_status:job_status_handler",
-    name="check job status",
-    identifier="check_job_status",
-    description="Check the status of an enrichment job",
-    action_type="investigate",
-    read_only=True,
-    params_class=JobStatusParams,
-    output_class=JobStatusOutput,
-)
-
 # Register enrich storage action
 app.register_action(
     "actions.enrich_storage:enrich_storage_handler",
@@ -104,10 +92,13 @@ app.register_action(
     description="Enrich storage information for a given agent and system",
     action_type="investigate",
     read_only=True,
+    view_handler="view_handlers.enrich_storage_view:render_enrich_storage_handler",
+    view_template="enrich_storage_results.html",
     params_class=EnrichStorageParams,
     output_class=EnrichStorageOutput,
 )
 
+# Register take snapshot action
 app.register_action(
     "actions.take_snapshot:take_snapshot_handler",
     name="take snapshot",
@@ -115,10 +106,13 @@ app.register_action(
     description="Take snapshot of a volume",
     action_type="generic",
     read_only=True,
+    view_handler="view_handlers.take_snapshot_view:render_take_snapshot_handler",
+    view_template="take_snapshot_results.html",
     params_class=TakeSnapshotParams,
     output_class=TakeSnapshotOutput,
 )
 
+# Register volume offline action
 app.register_action(
     "actions.volume_offline:volume_offline_handler",
     name="volume offline",
@@ -126,8 +120,24 @@ app.register_action(
     description="Take volume offline",
     action_type="generic",
     read_only=True,
+    view_handler="view_handlers.volume_offline_view:render_volume_offline_handler",
+    view_template="volume_offline_results.html",
     params_class=VolumeOfflineParams,
     output_class=VolumeOfflineOutput,
+)
+
+# Register job status action
+app.register_action(
+    "actions.job_status:job_status_handler",
+    name="check job status",
+    identifier="check_job_status",
+    description="Check the status of an enrichment job",
+    action_type="investigate",
+    read_only=True,
+    view_handler="view_handlers.job_status_view:render_job_status_handler",
+    view_template="job_status_results.html",
+    params_class=JobStatusParams,
+    output_class=JobStatusOutput,
 )
 
 if __name__ == "__main__":

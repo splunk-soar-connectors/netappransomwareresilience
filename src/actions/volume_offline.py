@@ -40,7 +40,7 @@ def volume_offline_handler(
         VolumeOfflineOutput with the created snapshot details including ID and timestamp
     """
     logger.info(
-        f"volume_offline_handler: Starting volume offline process: {params=}, Asset: {asset.rr_saas_domain}"
+        f"volume_offline_handler: Starting volume offline process: {params=}, Account: {asset.account_id}"
     )
 
     try:

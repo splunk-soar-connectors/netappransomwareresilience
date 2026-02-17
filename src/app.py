@@ -66,7 +66,7 @@ app = App(
 @app.test_connectivity()
 def test_connectivity(soar: SOARClient, asset: Asset) -> None:
     logger.info(
-        f"test_connectivity: Starting connectivity test domain={asset.rr_saas_domain}"
+        f"test_connectivity: Starting connectivity test for account={asset.account_id}"
     )
     test_connectivity_handler(asset)
 

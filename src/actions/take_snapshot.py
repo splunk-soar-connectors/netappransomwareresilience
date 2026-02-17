@@ -40,7 +40,7 @@ def take_snapshot_handler(
         TakeSnapshotOutput with the created snapshot details including ID and timestamp
     """
     logger.info(
-        f"take_snapshot_handler: Starting snapshot creation: {params=}, Asset: {asset.rr_saas_domain}"
+        f"take_snapshot_handler: Starting snapshot creation: {params=}, Account: {asset.account_id}"
     )
 
     try:

@@ -14,36 +14,24 @@
 """URL builder utility for constructing RR SaaS endpoints."""
 
 from asset import Asset
-from config.constants import RR_SAAS_API_PATH
+from config.constants import RRS_SERVICE_URL
 
 
 def build_rr_saas_url(asset: Asset) -> str:
     """
-    Construct the RR SaaS API URL using the provided domain.
+    Construct the RR SaaS API URL.
 
     Args:
-        asset: The Asset object containing the RR SaaS domain name (e.g., "snapcenter.cloudmanager.cloud.netapp.com")
+        asset: The Asset object containing the RR account id
 
     Returns:
-        Complete URL string in format: https://{domain}/rps/v1/account/
+        Complete URL string in format: https://{domain}/rps/v1/account/{account_id}
 
     Example:
         >>> build_rr_saas_url("snapcenter.cloudmanager.cloud.netapp.com")
-        'https://snapcenter.cloudmanager.cloud.netapp.com/rps/v1/account/'
+        'https://snapcenter.cloudmanager.cloud.netapp.com/rps/v1/account/{account_id}'
     """
-    # Remove any leading/trailing whitespace
-    domain = asset.rr_saas_domain.strip()
-
-    # Remove protocol if already present
-    if domain.startswith("https://"):
-        domain = domain[8:]
-    elif domain.startswith("http://"):
-        domain = domain[7:]
-
-    # Remove trailing slash if present
-    domain = domain.rstrip("/")
-
     # Construct the URL
-    url = f"https://{domain}{RR_SAAS_API_PATH}/{asset.account_id}"
+    url = f"{RRS_SERVICE_URL}/{asset.account_id}"
 
     return url

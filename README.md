@@ -108,7 +108,6 @@ Create an asset configuration file (`test_asset.json`) with your NetApp RRS cred
 
 ```json
 {
-  "rr_saas_domain": "snapcenter.cloudmanager.cloud.netapp.com",
   "client_id": "your-client-id-here",
   "client_secret": "your-client-secret-here",
   "account_id": "your-account-id-here"
@@ -117,7 +116,6 @@ Create an asset configuration file (`test_asset.json`) with your NetApp RRS cred
 
 **Asset Fields:**
 
-- **`rr_saas_domain`**: RR SaaS domain name (default: `snapcenter.cloudmanager.cloud.netapp.com`)
 - **`client_id`**: OAuth2 Client ID for authentication (sensitive field, encrypted in SOAR)
 - **`client_secret`**: OAuth2 Client Secret for authentication (sensitive field, encrypted in SOAR)
 - **`account_id`**: NetApp account ID for the RR SaaS account

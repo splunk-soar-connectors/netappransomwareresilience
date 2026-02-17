@@ -21,18 +21,11 @@ class Asset(BaseAsset):
     Asset configuration for NetApp RPS connector.
 
     Attributes:
-        base_url: Base URL for the API endpoint
-        api_key: API key for authentication
-        key_header: Header name to use for API key
-        api_token: API token value
-        timezone: Timezone without default
-        timezone_with_default: Timezone with default value
+        client_id: Client ID for OAuth authentication
+        client_secret: Client Secret for OAuth authentication
+        account_id: Account ID for the RR SaaS account
     """
 
-    rr_saas_domain: str = AssetField(
-        default="snapcenter.cloudmanager.cloud.netapp.com",
-        description="RR SaaS domain name",
-    )
     client_id: str = AssetField(
         sensitive=True, description="Client ID for authentication"
     )
@@ -40,5 +33,5 @@ class Asset(BaseAsset):
         sensitive=True, description="Client Secret for authentication"
     )
     account_id: str = AssetField(
-        sensitive=False, description="Account ID for the RR SaaS account"
+        sensitive=False, description="NetApp Console Account ID"
     )

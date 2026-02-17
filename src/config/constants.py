@@ -31,19 +31,19 @@ LOGO_DARK_FILE = "logo_dark.svg"
 # Environment Configuration
 """
     Production Environment Configuration:
-        OAUTH_TOKEN_URL = "https://netapp-cloud-account.auth0.com/oauth/token"
+        OAUTH_URL = "https://netapp-cloud-account.auth0.com/oauth/token"
         RRS_SERVICE_URL = "https://api.bluexp.netapp.com/v1/services/rps/v1/account"
         SSL_VERIFY = True  # Set to True for production environment
 
     Staging Environment Configuration:
-        OAUTH_TOKEN_URL = "https://staging-netapp-cloud-account.auth0.com/oauth/token"
+        OAUTH_URL = "https://staging-netapp-cloud-account.auth0.com/oauth/token"
         RRS_SERVICE_URL = "https://k8s-istioing-istioing-4ff0b93b67-74a65bde8c3bb0e5.elb.us-east-1.amazonaws.com/bavinash/v1/account" or "https://staging.api.bluexp.netapp.com/v1/services/rps/v1/account"
         SSL_VERIFY = False  # Set to False to allow self-signed certificates (dev/staging only)
 
 """
-OAUTH_URL = "https://staging-netapp-cloud-account.auth0.com/oauth/token"
-RRS_SERVICE_URL = "https://k8s-istioing-istioing-4ff0b93b67-74a65bde8c3bb0e5.elb.us-east-1.amazonaws.com/bavinash/v1/account"  # "https://staging.api.bluexp.netapp.com/v1/services/rps/v1/account"
-SSL_VERIFY = False
+OAUTH_URL = "https://netapp-cloud-account.auth0.com/oauth/token"
+RRS_SERVICE_URL = "https://api.bluexp.netapp.com/v1/services/rps/v1/account"
+SSL_VERIFY = True  # Set to True for production environment
 
 
 # OAuth Configuration

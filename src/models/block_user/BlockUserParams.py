@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pydantic import Field
-from soar_sdk.params import Params
+from soar_sdk.params import Param, Params
 
 
 class BlockUserParams(Params):
@@ -22,16 +21,18 @@ class BlockUserParams(Params):
 
     Attributes:
         user_id: User ID to block
-        user_ips: Client IPs to block (required for NFS; optional for CIFS)
+        user_ips: Client IPs to block as comma-separated string (required for NFS; optional for CIFS)
         duration: Block duration - permanent or hours (1, 2, 4, 8, 12, 24)
     """
 
-    user_id: str | None = Field(default=None, description="User ID to block")
-    user_ips: list[str] | None = Field(
+    user_id: str | None = Param(default=None, description="User ID to block")
+    user_ips: str | None = Param(
         default=None,
-        description="Client IPs to block (required for NFS; optional for CIFS).",
+        allow_list=True,
+        description="Client IPs to block (required for NFS; optional for CIFS). Comma-separated.",
     )
-    duration: str | None = Field(
+    duration: str | None = Param(
         default=None,
         description="Block duration - permanent or hours (1, 2, 4, 8, 12, 24)",
+        value_list=["permanent", "1", "2", "4", "8", "12", "24"],
     )

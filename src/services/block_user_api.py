@@ -53,6 +53,12 @@ def block_user_api(
     # Convert Pydantic model to dict, excluding None values
     request_payload = params.model_dump(exclude_none=True)
 
+    # Convert comma-separated user_ips string to list for API
+    if request_payload.get("user_ips"):
+        request_payload["user_ips"] = [
+            ip.strip() for ip in request_payload["user_ips"].split(",")
+        ]
+
     # Build full URL
     url = f"{build_rr_saas_url(asset)}{ENDPOINT_BLOCK_USER}"
 

@@ -237,7 +237,7 @@ python src/app.py action block_user -p ./src/test_params/block_user.json -a ./sr
 ```json
 {
   "user_id": "user123",
-  "user_ips": ["10.1.1.1", "10.1.1.2"],
+  "user_ips": "10.1.1.1, 10.1.1.2",
   "duration": "permanent"
 }
 ```
@@ -245,7 +245,7 @@ python src/app.py action block_user -p ./src/test_params/block_user.json -a ./sr
 **Parameter Details:**
 
 - `user_id` (optional): User ID to block
-- `user_ips` (optional): Client IPs to block (required for NFS; optional for CIFS/SMB)
+- `user_ips` (optional): Client IPs to block as comma-separated string (required for NFS; optional for CIFS/SMB)
 - `duration` (optional): Block duration - `permanent` or hours (`1`, `2`, `4`, `8`, `12`, `24`)
 
 ## 🎯 Available Actions

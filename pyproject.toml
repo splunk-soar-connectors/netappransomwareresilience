@@ -2,7 +2,7 @@
 name = "netapp-ransomware-resilience"
 version = "1.0.0"
 description = "A comprehensive Splunk SOAR integration for NetApp Ransomware Resilience Service, enabling automated threat response and data protection actions through SOAR playbooks."
-license = "Copyright (c) 2026 Splunk Inc."
+license = "Copyright (c) 2026 NetApp Inc."
 requires-python = ">=3.13, <3.15"
 authors = [
 ]

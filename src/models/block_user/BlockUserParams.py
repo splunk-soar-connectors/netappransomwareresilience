@@ -25,7 +25,7 @@ class BlockUserParams(Params):
         duration: Block duration - permanent or hours (1, 2, 4, 8, 12, 24)
     """
 
-    user_id: str | None = Param(default=None, description="User ID to block")
+    user_id: str = Param(description="User ID to block")
     user_ips: str | None = Param(
         default=None,
         allow_list=True,

@@ -147,7 +147,7 @@ app.register_action(
     "actions.block_user:block_user_handler",
     name="block user",
     identifier="block_user",
-    description="Block a user from accessing storage resources",
+    description="Block user from accessing resources protected by Ransomware Resilience",
     action_type="contain",
     read_only=False,
     view_handler="view_handlers.block_user_view:render_block_user_handler",

@@ -26,12 +26,12 @@ class BlockUserParams(Params):
     """
 
     user_id: str = Param(description="User ID to block")
-    user_ips: str | None = Param(
+    user_ips: str = Param(
         default=None,
         allow_list=True,
         description="Client IPs to block (required for NFS; optional for CIFS). Comma-separated.",
     )
-    duration: str | None = Param(
+    duration: str = Param(
         default=None,
         description="Block duration - permanent or hours (1, 2, 4, 8, 12, 24)",
         value_list=["permanent", "1", "2", "4", "8", "12", "24"],

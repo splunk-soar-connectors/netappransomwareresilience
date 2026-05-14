@@ -53,6 +53,7 @@ rrs-splunk-soar-app/
 │   │
 │   ├── actions/                    # Action handlers (orchestration layer)
 │   │   ├── __init__.py
+│   │   ├── block_user.py           # Block user action
 │   │   ├── connectivity.py         # Test connectivity action
 │   │   ├── enrich_ip.py           # IP enrichment action
 │   │   ├── enrich_storage.py      # Storage enrichment action
@@ -63,6 +64,7 @@ rrs-splunk-soar-app/
 │   ├── services/                   # Business logic and API calls
 │   │   ├── __init__.py
 │   │   ├── auth_service_api.py     # OAuth token management (get_oauth_token_api)
+│   │   ├── block_user_api.py       # Block user API service (block_user_api)
 │   │   ├── enrich_ip_api.py        # IP enrichment API service (enrich_ip_api)
 │   │   ├── enrich_storage_api.py   # Storage enrichment API service (enrich_storage_api)
 │   │   ├── job_status_api.py       # Job status polling service (get_job_status_api)
@@ -72,6 +74,7 @@ rrs-splunk-soar-app/
 │   ├── models/                     # Pydantic models for type safety
 │   │   ├── __init__.py
 │   │   ├── asset.py                # Asset model
+│   │   ├── block_user/             # Block user models
 │   │   ├── enrich_ip/              # IP enrichment models
 │   │   ├── enrich_storage/         # Storage enrichment models
 │   │   ├── job_status/             # Job status models
@@ -88,6 +91,7 @@ rrs-splunk-soar-app/
 │   │
 │   └── test_params/                # Test parameter files
 │       ├── test_asset.json         # Asset configuration for testing (gitignored)
+│       ├── block_user.json         # Block user test parameters
 │       ├── enrich_ip.json          # IP enrichment test parameters
 │       ├── enrich_storage.json     # Storage enrichment test parameters
 │       ├── job_status.json         # Job status test parameters
@@ -220,6 +224,30 @@ python src/app.py action volume_offline -p ./src/test_params/volume_offline.json
 }
 ```
 
+### Block User
+
+Block a user from accessing storage resources:
+
+```bash
+python src/app.py action block_user -p ./src/test_params/block_user.json -a ./src/test_params/test_asset.json
+```
+
+**Parameters** (`block_user.json`):
+
+```json
+{
+  "user_id": "user123",
+  "user_ips": "10.1.1.1, 10.1.1.2",
+  "duration": "permanent"
+}
+```
+
+**Parameter Details:**
+
+- `user_id` (optional): User ID to block
+- `user_ips` (optional): Client IPs to block as comma-separated string (required for NFS; optional for CIFS/SMB)
+- `duration` (optional): Block duration - `permanent` or hours (`1`, `2`, `4`, `8`, `12`, `24`)
+
 ## 🎯 Available Actions
 
 | Action | Identifier | Type | Description |
@@ -230,6 +258,7 @@ python src/app.py action volume_offline -p ./src/test_params/volume_offline.json
 | Check Job Status | `check_job_status` | Investigate | Check status of asynchronous jobs |
 | Take Snapshot | `take_snapshot` | Generic | Create volume snapshot |
 | Volume Offline | `volume_offline` | Generic | Take volume offline |
+| Block User | `block_user` | Contain | Block user from accessing storage |
 
 ## 🏗️ Architecture
 
@@ -245,6 +274,7 @@ This app follows a clean architecture pattern with separation of concerns:
 All service functions follow the naming pattern `*_api`:
 
 - `get_oauth_token_api()` - OAuth authentication
+- `block_user_api()` - Block user
 - `enrich_ip_api()` - IP enrichment
 - `enrich_storage_api()` - Storage enrichment
 - `get_job_status_api()` - Job status polling
@@ -327,8 +357,7 @@ The app integrates with the following NetApp RRS API endpoints:
 | `/enrich/storage` | GET | Storage volume information |
 | `/storage/take-snapshot` | POST | Create volume snapshot |
 | `/storage/take-volume-offline` | POST | Take volume offline |
-| `/job/status` | GET | Check job status |
-
+| `/job/status` | GET | Check job status || `/users/block-user` | POST | Block user from storage access |
 All endpoints are defined in `src/config/constants.py`.
 
 ## 🐛 Troubleshooting

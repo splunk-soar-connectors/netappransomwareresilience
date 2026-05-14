@@ -33,6 +33,8 @@ from models.volume_offline.VolumeOfflineParams import VolumeOfflineParams
 from models.volume_offline.VolumeOfflineOutput import VolumeOfflineOutput
 from models.job_status.JobStatusParams import JobStatusParams
 from models.job_status.JobStatusOutput import JobStatusOutput
+from models.block_user.BlockUserParams import BlockUserParams
+from models.block_user.BlockUserOutput import BlockUserOutput
 from asset import Asset
 from config.constants import (
     APP_NAME,
@@ -138,6 +140,20 @@ app.register_action(
     view_template="job_status_results.html",
     params_class=JobStatusParams,
     output_class=JobStatusOutput,
+)
+
+# Register block user action
+app.register_action(
+    "actions.block_user:block_user_handler",
+    name="block user",
+    identifier="block_user",
+    description="Block user from accessing resources protected by Ransomware Resilience",
+    action_type="contain",
+    read_only=False,
+    view_handler="view_handlers.block_user_view:render_block_user_handler",
+    view_template="block_user_results.html",
+    params_class=BlockUserParams,
+    output_class=BlockUserOutput,
 )
 
 if __name__ == "__main__":

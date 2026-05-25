@@ -59,7 +59,8 @@ rrs-splunk-soar-app/
 │   │   ├── enrich_storage.py      # Storage enrichment action
 │   │   ├── job_status.py          # Job status checking action
 │   │   ├── take_snapshot.py        # Snapshot creation action
-│   │   └── volume_offline.py       # Volume offline action
+│   │   ├── volume_offline.py       # Volume offline action
+│   │   └── volume_online.py        # Volume online action
 │   │
 │   ├── services/                   # Business logic and API calls
 │   │   ├── __init__.py
@@ -69,7 +70,8 @@ rrs-splunk-soar-app/
 │   │   ├── enrich_storage_api.py   # Storage enrichment API service (enrich_storage_api)
 │   │   ├── job_status_api.py       # Job status polling service (get_job_status_api)
 │   │   ├── take_snapshot_api.py    # Snapshot API service (take_snapshot_api)
-│   │   └── volume_offline_api.py   # Volume offline API service (volume_offline_api)
+│   │   ├── volume_offline_api.py   # Volume offline API service (volume_offline_api)
+│   │   └── volume_online_api.py    # Volume online API service (volume_online_api)
 │   │
 │   ├── models/                     # Pydantic models for type safety
 │   │   ├── __init__.py
@@ -79,7 +81,8 @@ rrs-splunk-soar-app/
 │   │   ├── enrich_storage/         # Storage enrichment models
 │   │   ├── job_status/             # Job status models
 │   │   ├── take_snapshot/          # Snapshot models
-│   │   └── volume_offline/         # Volume offline models
+│   │   ├── volume_offline/         # Volume offline models
+│   │   └── volume_online/          # Volume online models
 │   │
 │   ├── config/                     # Configuration and constants
 │   │   ├── __init__.py
@@ -96,7 +99,8 @@ rrs-splunk-soar-app/
 │       ├── enrich_storage.json     # Storage enrichment test parameters
 │       ├── job_status.json         # Job status test parameters
 │       ├── take_snapshot.json      # Snapshot test parameters
-│       └── volume_offline.json     # Volume offline test parameters
+│       ├── volume_offline.json     # Volume offline test parameters
+│       └── volume_online.json      # Volume online test parameters
 │
 ├── pyproject.toml                  # Project configuration and dependencies
 ├── README.md                       # This file
@@ -224,6 +228,24 @@ python src/app.py action volume_offline -p ./src/test_params/volume_offline.json
 }
 ```
 
+### Take Volume Online
+
+Bring a volume back online (counterpart to volume offline):
+
+```bash
+python src/app.py action volume_online -p ./src/test_params/volume_online.json -a ./src/test_params/test_asset.json
+```
+
+**Parameters** (`volume_online.json`):
+
+```json
+{
+  "agent_id": "agent-123",
+  "system_id": "sys-456",
+  "volume_uuid": "vol-uuid-789"
+}
+```
+
 ### Block User
 
 Block a user from accessing storage resources:
@@ -258,6 +280,7 @@ python src/app.py action block_user -p ./src/test_params/block_user.json -a ./sr
 | Check Job Status | `check_job_status` | Investigate | Check status of asynchronous jobs |
 | Take Snapshot | `take_snapshot` | Generic | Create volume snapshot |
 | Volume Offline | `volume_offline` | Generic | Take volume offline |
+| Volume Online | `volume_online` | Generic | Take volume online |
 | Block User | `block_user` | Contain | Block user from accessing storage |
 
 ## 🏗️ Architecture
@@ -280,6 +303,7 @@ All service functions follow the naming pattern `*_api`:
 - `get_job_status_api()` - Job status polling
 - `take_snapshot_api()` - Snapshot creation
 - `volume_offline_api()` - Volume offline
+- `volume_online_api()` - Volume online
 
 ## 📌 Important Files
 
@@ -357,6 +381,7 @@ The app integrates with the following NetApp RRS API endpoints:
 | `/enrich/storage` | GET | Storage volume information |
 | `/storage/take-snapshot` | POST | Create volume snapshot |
 | `/storage/take-volume-offline` | POST | Take volume offline |
+| `/storage/take-volume-online` | POST | Take volume online |
 | `/job/status` | GET | Check job status || `/users/block-user` | POST | Block user from storage access |
 All endpoints are defined in `src/config/constants.py`.
 

@@ -1,3 +1,3 @@
 **Unreleased**
 
-* - Added `volume online` action to bring a volume back online, serving as the counterpart to the existing `volume offline` action.
+* Added `volume online` action, enabling playbooks to programmatically restore volumes after remediation — pairs with the existing `volume offline` action.

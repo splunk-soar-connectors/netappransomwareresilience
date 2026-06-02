@@ -1,423 +1,282 @@
-# NetApp Ransomware Resilience (RRS) - Splunk SOAR App
-
-![Python Version](https://img.shields.io/badge/python-3.13%2B-blue)
-![Splunk SOAR SDK](https://img.shields.io/badge/splunk--soar--sdk-%3E%3D3.8.2-orange)
-![httpx](https://img.shields.io/badge/httpx-%3E%3D0.27.0-green)
-![Pydantic](https://img.shields.io/badge/pydantic-v2-red)
-
-A comprehensive Splunk SOAR integration for NetApp Ransomware Resilience Service (RRS), enabling automated threat response and data protection actions through SOAR playbooks.
-
-## 📋 Table of Contents
-
-- [Prerequisites](#prerequisites)
-- [Setup](#setup)
-- [Project Structure](#project-structure)
-- [Configuration](#configuration)
-- [Testing Actions](#testing-actions)
-- [Available Actions](#available-actions)
-- [Building the App](#building-the-app)
-
-## 🔧 Prerequisites
-
-- Python 3.13 or higher (< 3.15)
-- Splunk SOAR SDK >= 3.8.2
-- httpx >= 0.27.0
-- NetApp RRS account with API credentials
-
-## 📦 Setup
-
-For first-time setup and installation of the Splunk SOAR SDK, refer to the official documentation:
-
-👉 **[Splunk SOAR SDK Installation Guide](https://phantomcyber.github.io/splunk-soar-sdk/getting_started/installation.html)**
-
-Once the SDK is installed, clone the repository and set up the environment:
-
-```bash
-git clone <repository-url>
-cd rrs-splunk-soar-app
-
-# Install dependencies (creates venv and installs packages)
-uv sync
-
-# Activate the virtual environment (optional - for running shell commands)
-source .venv/bin/activate
-```
-
-## 📁 Project Structure
-
-```
-rrs-splunk-soar-app/
-├── src/
-│   ├── app.py                      # Main SOAR application entry point
-│   ├── asset.py                    # Asset configuration model
-│   │
-│   ├── actions/                    # Action handlers (orchestration layer)
-│   │   ├── __init__.py
-│   │   ├── block_user.py           # Block user action
-│   │   ├── connectivity.py         # Test connectivity action
-│   │   ├── enrich_ip.py           # IP enrichment action
-│   │   ├── enrich_storage.py      # Storage enrichment action
-│   │   ├── job_status.py          # Job status checking action
-│   │   ├── take_snapshot.py        # Snapshot creation action
-│   │   ├── volume_offline.py       # Volume offline action
-│   │   └── volume_online.py        # Volume online action
-│   │
-│   ├── services/                   # Business logic and API calls
-│   │   ├── __init__.py
-│   │   ├── auth_service_api.py     # OAuth token management (get_oauth_token_api)
-│   │   ├── block_user_api.py       # Block user API service (block_user_api)
-│   │   ├── enrich_ip_api.py        # IP enrichment API service (enrich_ip_api)
-│   │   ├── enrich_storage_api.py   # Storage enrichment API service (enrich_storage_api)
-│   │   ├── job_status_api.py       # Job status polling service (get_job_status_api)
-│   │   ├── take_snapshot_api.py    # Snapshot API service (take_snapshot_api)
-│   │   ├── volume_offline_api.py   # Volume offline API service (volume_offline_api)
-│   │   └── volume_online_api.py    # Volume online API service (volume_online_api)
-│   │
-│   ├── models/                     # Pydantic models for type safety
-│   │   ├── __init__.py
-│   │   ├── asset.py                # Asset model
-│   │   ├── block_user/             # Block user models
-│   │   ├── enrich_ip/              # IP enrichment models
-│   │   ├── enrich_storage/         # Storage enrichment models
-│   │   ├── job_status/             # Job status models
-│   │   ├── take_snapshot/          # Snapshot models
-│   │   ├── volume_offline/         # Volume offline models
-│   │   └── volume_online/          # Volume online models
-│   │
-│   ├── config/                     # Configuration and constants
-│   │   ├── __init__.py
-│   │   └── constants.py            # API endpoints and app metadata
-│   │
-│   ├── utils/                      # Utility functions
-│   │   ├── __init__.py
-│   │   └── url_builder.py          # URL construction helpers
-│   │
-│   └── test_params/                # Test parameter files
-│       ├── test_asset.json         # Asset configuration for testing (gitignored)
-│       ├── block_user.json         # Block user test parameters
-│       ├── enrich_ip.json          # IP enrichment test parameters
-│       ├── enrich_storage.json     # Storage enrichment test parameters
-│       ├── job_status.json         # Job status test parameters
-│       ├── take_snapshot.json      # Snapshot test parameters
-│       ├── volume_offline.json     # Volume offline test parameters
-│       └── volume_online.json      # Volume online test parameters
-│
-├── pyproject.toml                  # Project configuration and dependencies
-├── README.md                       # This file
-└── release_notes/
-    └── unreleased.md               # Release notes
-```
+# NetApp Ransomware Resilience
 
-## 🔑 Configuration
+Publisher: NetApp <br>
+Connector Version: 1.1.0 <br>
+Product Vendor: NetApp <br>
+Product Name: NetApp Ransomware Resilience <br>
+Minimum Product Version: 7.0.0
 
-### Asset Configuration
+A comprehensive Splunk SOAR integration for NetApp Ransomware Resilience Service, enabling automated threat response and data protection actions through SOAR playbooks.
 
-Create an asset configuration file (`test_asset.json`) with your NetApp RRS credentials:
+### Configuration variables
 
-```json
-{
-  "client_id": "your-client-id-here",
-  "client_secret": "your-client-secret-here",
-  "account_id": "your-account-id-here"
-}
-```
+This table lists the configuration variables required to operate NetApp Ransomware Resilience. These variables are specified when configuring a NetApp Ransomware Resilience asset in Splunk SOAR.
 
-**Asset Fields:**
+VARIABLE | REQUIRED | TYPE | DESCRIPTION
+-------- | -------- | ---- | -----------
+**client_id** | required | password | Client ID for authentication |
+**client_secret** | required | password | Client Secret for authentication |
+**account_id** | required | string | NetApp Console Account ID |
 
-- **`client_id`**: OAuth2 Client ID for authentication (sensitive field, encrypted in SOAR)
-- **`client_secret`**: OAuth2 Client Secret for authentication (sensitive field, encrypted in SOAR)
-- **`account_id`**: NetApp account ID for the RR SaaS account
+### Supported Actions
 
-**Note**: `test_asset.json` is gitignored to protect sensitive credentials.
+[test connectivity](#action-test-connectivity) - test connectivity <br>
+[enrich ip address](#action-enrich-ip-address) - Enrich IP address with additional information <br>
+[enrich storage](#action-enrich-storage) - Enrich storage information for a given agent and system <br>
+[take snapshot](#action-take-snapshot) - Take snapshot of a volume <br>
+[volume offline](#action-volume-offline) - Take volume offline <br>
+[volume online](#action-volume-online) - Take volume online <br>
+[check job status](#action-check-job-status) - Check the status of an enrichment job <br>
+[block user](#action-block-user) - Block user from accessing resources protected by Ransomware Resilience
 
-## 🧪 Testing Actions
+## action: 'test connectivity'
 
-Run actions locally using the following commands:
+test connectivity
 
-### Test Connectivity
+Type: **test** <br>
+Read only: **True**
 
-Verify authentication and connectivity to NetApp RRS API:
+Basic test for app.
 
-```bash
-python src/app.py action test-connectivity -a ./src/test_params/test_asset.json
-```
+#### Action Parameters
 
-### Enrich IP Address
+No parameters are required for this action
 
-Enrich an IP address with threat intelligence:
+#### Action Output
 
-```bash
-python src/app.py action enrich_ip_address -p ./src/test_params/enrich_ip.json -a ./src/test_params/test_asset.json
-```
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
-**Parameters** (`enrich_ip.json`):
+## action: 'enrich ip address'
 
-```json
-{
-  "ip_address": "192.168.1.100"
-}
-```
+Enrich IP address with additional information
 
-### Enrich Storage
+Type: **investigate** <br>
+Read only: **True**
 
-Get storage volume information for an agent and system:
+#### Action Parameters
 
-```bash
-python src/app.py action enrich_storage -p ./src/test_params/enrich_storage.json -a ./src/test_params/test_asset.json
-```
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**ip_address** | required | Ip Address | string | |
 
-**Parameters** (`enrich_storage.json`):
+#### Action Output
 
-```json
-{
-  "agent_id": "your-agent-id",
-  "system_id": "your-system-id"
-}
-```
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.ip_address | string | | |
+action_result.data.\*.jobs.\*.job_id | string | | |
+action_result.data.\*.jobs.\*.status | string | | |
+action_result.data.\*.jobs.\*.source | string | | |
+action_result.data.\*.jobs.\*.agent_id | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
-### Check Job Status
+## action: 'enrich storage'
 
-Check the status of an asynchronous job:
+Enrich storage information for a given agent and system
 
-```bash
-python src/app.py action check_job_status -p ./src/test_params/job_status.json -a ./src/test_params/test_asset.json
-```
+Type: **investigate** <br>
+Read only: **True**
 
-**Parameters** (`job_status.json`):
+#### Action Parameters
 
-```json
-{
-  "job_id": "job-123456"
-}
-```
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**agent_id** | required | Agent Id | string | |
+**system_id** | required | System Id | string | |
 
-### Take Snapshot
+#### Action Output
 
-Create a snapshot of a volume:
-
-```bash
-python src/app.py action take_snapshot -p ./src/test_params/take_snapshot.json -a ./src/test_params/test_asset.json
-```
-
-**Parameters** (`take_snapshot.json`):
-
-```json
-{
-  "agent_id": "agent-123",
-  "system_id": "sys-456",
-  "volume_uuid": "vol-uuid-789",
-  "snapshot_name": "snapshot-backup-001"
-}
-```
-
-### Take Volume Offline
-
-Take a volume offline for incident response:
-
-```bash
-python src/app.py action volume_offline -p ./src/test_params/volume_offline.json -a ./src/test_params/test_asset.json
-```
-
-**Parameters** (`volume_offline.json`):
-
-```json
-{
-  "agent_id": "agent-123",
-  "system_id": "sys-456",
-  "volume_uuid": "vol-uuid-789"
-}
-```
-
-### Take Volume Online
-
-Bring a volume back online (counterpart to volume offline):
-
-```bash
-python src/app.py action volume_online -p ./src/test_params/volume_online.json -a ./src/test_params/test_asset.json
-```
-
-**Parameters** (`volume_online.json`):
-
-```json
-{
-  "agent_id": "agent-123",
-  "system_id": "sys-456",
-  "volume_uuid": "vol-uuid-789"
-}
-```
-
-### Block User
-
-Block a user from accessing storage resources:
-
-```bash
-python src/app.py action block_user -p ./src/test_params/block_user.json -a ./src/test_params/test_asset.json
-```
-
-**Parameters** (`block_user.json`):
-
-```json
-{
-  "user_id": "user123",
-  "user_ips": "10.1.1.1, 10.1.1.2",
-  "duration": "permanent"
-}
-```
-
-**Parameter Details:**
-
-- `user_id` (optional): User ID to block
-- `user_ips` (optional): Client IPs to block as comma-separated string (required for NFS; optional for CIFS/SMB)
-- `duration` (optional): Block duration - `permanent` or hours (`1`, `2`, `4`, `8`, `12`, `24`)
-
-## 🎯 Available Actions
-
-| Action | Identifier | Type | Description |
-|--------|-----------|------|-------------|
-| Test Connectivity | `test_connectivity` | Test | Verify API credentials and connectivity |
-| Enrich IP Address | `enrich_ip_address` | Investigate | Enrich IP with threat intelligence |
-| Enrich Storage | `enrich_storage` | Investigate | Get volume information for agent/system |
-| Check Job Status | `check_job_status` | Investigate | Check status of asynchronous jobs |
-| Take Snapshot | `take_snapshot` | Generic | Create volume snapshot |
-| Volume Offline | `volume_offline` | Generic | Take volume offline |
-| Volume Online | `volume_online` | Generic | Take volume online |
-| Block User | `block_user` | Contain | Block user from accessing storage |
-
-## 🏗️ Architecture
-
-This app follows a clean architecture pattern with separation of concerns:
-
-- **Actions** (`src/actions/`): Orchestration layer that handles SOAR-specific logic
-- **Services** (`src/services/`): Business logic and API communication (all functions use `_api` suffix)
-- **Models** (`src/models/`): Pydantic v2 models for type safety and validation
-- **Config** (`src/config/`): Centralized configuration and constants
-
-### Service Functions Convention
-
-All service functions follow the naming pattern `*_api`:
-
-- `get_oauth_token_api()` - OAuth authentication
-- `block_user_api()` - Block user
-- `enrich_ip_api()` - IP enrichment
-- `enrich_storage_api()` - Storage enrichment
-- `get_job_status_api()` - Job status polling
-- `take_snapshot_api()` - Snapshot creation
-- `volume_offline_api()` - Volume offline
-- `volume_online_api()` - Volume online
-
-## 📌 Important Files
-
-- **`src/app.py`**: Main entry point, registers all actions using `app.register_action()`
-- **`src/asset.py`**: Asset configuration model with sensitive field handling
-- **`src/config/constants.py`**: All API endpoints, OAuth config, and app metadata
-- **`src/services/auth_service_api.py`**: Authentication service for OAuth token management
-- **`pyproject.toml`**: Project dependencies and SOAR app configuration
-
-## 🔐 Security Features
-
-- SSL/TLS certificate verification (configurable via `SSL_VERIFY` in constants)
-- Sensitive fields (client_id, client_secret) are encrypted when stored in SOAR
-- OAuth 2.0 authentication with Bearer tokens for all API calls
-- Test asset files are gitignored to prevent credential leaks
-
-## 🛠️ Development
-
-### Adding a New Action
-
-Follow this template when adding new actions:
-
-1. **Models**: Create `[ActionName]Params.py` and `[ActionName]Output.py` in `src/models/[action_name]/`
-1. **Service**: Create `[action_name]_api.py` in `src/services/` (follow `enrich_ip_api.py` pattern)
-1. **Action**: Create `[action_name].py` in `src/actions/` (follow `enrich_ip.py` pattern)
-1. **Constants**: Add endpoint constant to `src/config/constants.py`
-1. **Registration**: Import and register in `src/app.py`
-1. **Test Params**: Create `[action_name].json` in `src/test_params/`
-
-All service functions must use the `_api` suffix (e.g., `my_action_api()`).
-
-### Code Conventions
-
-- Use Pydantic v2 for all models with `ConfigDict(populate_by_name=True)`
-- Use `Field(default_factory=list)` for mutable defaults (not `= []`)
-- Service functions return typed models, not raw dicts
-- Actions handle SOAR-specific logic (summary, messages, error conversion)
-- Services handle API communication and business logic
-
-## 🔨 Building the App
-
-Build the SOAR app package for deployment:
-
-```bash
-soarapps package build
-```
-
-This creates a `.tgz` file in the current directory that can be installed on Splunk SOAR.
-
-### Package Installation
-
-1. Log in to your Splunk SOAR instance
-1. Navigate to **Apps** → **Install App**
-1. Upload the generated `.tgz` file
-1. Configure the asset with your NetApp RRS credentials
-
-## 🧪 Testing
-
-All actions can be tested locally before deployment:
-
-```bash
-# Run all tests with different parameter files
-python src/app.py action <action_identifier> -p ./src/test_params/<params_file>.json -a ./src/test_params/test_asset.json
-```
-
-Ensure your `test_asset.json` has valid credentials before testing.
-
-## 📚 API Endpoints
-
-The app integrates with the following NetApp RRS API endpoints:
-
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/enrich/ip-address` | POST | IP address enrichment |
-| `/enrich/storage` | GET | Storage volume information |
-| `/storage/take-snapshot` | POST | Create volume snapshot |
-| `/storage/take-volume-offline` | POST | Take volume offline |
-| `/storage/take-volume-online` | POST | Take volume online |
-| `/job/status` | GET | Check job status || `/users/block-user` | POST | Block user from storage access |
-All endpoints are defined in `src/config/constants.py`.
-
-## 🐛 Troubleshooting
-
-### SSL Certificate Errors
-
-If you encounter SSL certificate errors with self-signed certificates:
-
-- Set `SSL_VERIFY = False` in `src/config/constants.py` (for dev/staging only)
-- For production, use proper SSL certificates and set `SSL_VERIFY = True`
-
-### Import Errors
-
-- Ensure virtual environment is activated: `source .venv/bin/activate`
-- Reinstall dependencies: `uv sync`
-
-### Authentication Failures
-
-- Verify client_id and client_secret in `test_asset.json`
-- Check OAuth endpoint configuration in `constants.py`
-- Ensure domain is correct (e.g., `your-domain.cloud.netapp.com`)
-
-## 📝 Notes
-
-- Sensitive fields (client_id, client_secret) are encrypted when stored in SOAR
-- All API calls use secure OAuth 2.0 authentication with Bearer tokens
-- Service layer returns typed Pydantic models for better IDE support and type safety
-- All service functions follow the `*_api` naming convention for consistency
-
-## 🔗 Resources
-
-- [Splunk SOAR SDK Documentation](https://phantomcyber.github.io/splunk-soar-sdk/)
-- [Splunk SOAR SDK GitHub](https://github.com/phantomcyber/splunk-soar-sdk)
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.agent_id | string | | |
+action_result.parameter.system_id | string | | |
+action_result.data.\*.volumes.\*.volume_uuid | string | | |
+action_result.data.\*.volumes.\*.volume_name | string | | |
+action_result.data.\*.volumes.\*.svm_name | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'take snapshot'
+
+Take snapshot of a volume
+
+Type: **generic** <br>
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**volume_id** | required | Volume Id | string | |
+**agent_id** | required | Agent Id | string | |
+**system_id** | required | System Id | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.volume_id | string | | |
+action_result.parameter.agent_id | string | | |
+action_result.parameter.system_id | string | | |
+action_result.data.\*.job_id | string | | |
+action_result.data.\*.status | string | | |
+action_result.data.\*.source | string | | |
+action_result.data.\*.agent_id | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'volume offline'
+
+Take volume offline
+
+Type: **generic** <br>
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**volume_id** | required | Volume Id | string | |
+**agent_id** | required | Agent Id | string | |
+**system_id** | required | System Id | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.volume_id | string | | |
+action_result.parameter.agent_id | string | | |
+action_result.parameter.system_id | string | | |
+action_result.data.\*.job_id | string | | |
+action_result.data.\*.status | string | | |
+action_result.data.\*.source | string | | |
+action_result.data.\*.agent_id | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'volume online'
+
+Take volume online
+
+Type: **generic** <br>
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**volume_id** | required | Volume Id | string | |
+**agent_id** | required | Agent Id | string | |
+**system_id** | required | System Id | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.volume_id | string | | |
+action_result.parameter.agent_id | string | | |
+action_result.parameter.system_id | string | | |
+action_result.data.\*.job_id | string | | |
+action_result.data.\*.status | string | | |
+action_result.data.\*.source | string | | |
+action_result.data.\*.agent_id | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'check job status'
+
+Check the status of an enrichment job
+
+Type: **investigate** <br>
+Read only: **True**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**job_id** | required | Job Id | string | |
+**agent_id** | required | Agent Id | string | |
+**source** | required | Source | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.job_id | string | | |
+action_result.parameter.agent_id | string | | |
+action_result.parameter.source | string | | |
+action_result.data.\*.job_id | string | | |
+action_result.data.\*.source | string | | |
+action_result.data.\*.status | string | | |
+action_result.data.\*.records.\*.system_id | string | | |
+action_result.data.\*.records.\*.ip_address | string | | |
+action_result.data.\*.records.\*.lif_type | string | | |
+action_result.data.\*.records.\*.scope | string | | |
+action_result.data.\*.records.\*.svm | string | | |
+action_result.data.\*.records.\*.agent_id | string | | |
+action_result.data.\*.message | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'block user'
+
+Block user from accessing resources protected by Ransomware Resilience
+
+Type: **contain** <br>
+Read only: **False**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**user_id** | required | User ID to block | string | |
+**user_ips** | required | Client IPs to block (required for NFS; optional for CIFS). Comma-separated. | string | |
+**duration** | required | Block duration - permanent or hours (1, 2, 4, 8, 12, 24) | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.user_id | string | | |
+action_result.parameter.user_ips | string | | |
+action_result.parameter.duration | string | | |
+action_result.data.\*.message | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
 
 ______________________________________________________________________
 
-**Version**: 1.0.0\
-**Maintained by**: NetApp RRS Team
+Auto-generated Splunk SOAR Connector documentation.
+
+Copyright 2026 Splunk Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations under the License.

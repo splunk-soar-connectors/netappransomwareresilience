@@ -142,7 +142,7 @@ summary.total_objects_successful | numeric | | 1 |
 Take volume offline
 
 Type: **generic** <br>
-Read only: **True**
+Read only: **False**
 
 #### Action Parameters
 
@@ -173,7 +173,7 @@ summary.total_objects_successful | numeric | | 1 |
 Take volume online
 
 Type: **generic** <br>
-Read only: **True**
+Read only: **False**
 
 #### Action Parameters
 

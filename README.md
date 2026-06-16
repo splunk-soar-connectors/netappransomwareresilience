@@ -1,7 +1,7 @@
 # NetApp Ransomware Resilience
 
 Publisher: NetApp <br>
-Connector Version: 1.1.0 <br>
+Connector Version: 1.2.0 <br>
 Product Vendor: NetApp <br>
 Product Name: NetApp Ransomware Resilience <br>
 Minimum Product Version: 7.0.0

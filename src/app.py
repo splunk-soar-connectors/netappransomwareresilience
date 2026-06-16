@@ -31,6 +31,8 @@ from models.take_snapshot.TakeSnapshotParams import TakeSnapshotParams
 from models.take_snapshot.TakeSnapshotOutput import TakeSnapshotOutput
 from models.volume_offline.VolumeOfflineParams import VolumeOfflineParams
 from models.volume_offline.VolumeOfflineOutput import VolumeOfflineOutput
+from models.volume_online.VolumeOnlineParams import VolumeOnlineParams
+from models.volume_online.VolumeOnlineOutput import VolumeOnlineOutput
 from models.job_status.JobStatusParams import JobStatusParams
 from models.job_status.JobStatusOutput import JobStatusOutput
 from models.block_user.BlockUserParams import BlockUserParams
@@ -121,11 +123,25 @@ app.register_action(
     identifier="volume_offline",
     description="Take volume offline",
     action_type="generic",
-    read_only=True,
+    read_only=False,
     view_handler="view_handlers.volume_offline_view:render_volume_offline_handler",
     view_template="volume_offline_results.html",
     params_class=VolumeOfflineParams,
     output_class=VolumeOfflineOutput,
+)
+
+# Register volume online action
+app.register_action(
+    "actions.volume_online:volume_online_handler",
+    name="volume online",
+    identifier="volume_online",
+    description="Take volume online",
+    action_type="generic",
+    read_only=False,
+    view_handler="view_handlers.volume_online_view:render_volume_online_handler",
+    view_template="volume_online_results.html",
+    params_class=VolumeOnlineParams,
+    output_class=VolumeOnlineOutput,
 )
 
 # Register job status action

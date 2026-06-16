@@ -59,6 +59,7 @@ OAUTH_CONFIG = {
 ENDPOINT_ENRICH_IP = "/enrich/ip-address"
 ENDPOINT_ENRICH_STORAGE = "/enrich/storage"
 ENDPOINT_VOLUME_OFFLINE = "/storage/take-volume-offline"
+ENDPOINT_VOLUME_ONLINE = "/storage/take-volume-online"
 ENDPOINT_TAKE_SNAPSHOT = "/storage/take-snapshot"
 ENDPOINT_JOB_STATUS = "/job/status"
 ENDPOINT_BLOCK_USER = "/users/block-user"

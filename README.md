@@ -1,7 +1,7 @@
 # NetApp Ransomware Resilience
 
 Publisher: NetApp <br>
-Connector Version: 1.1.0 <br>
+Connector Version: 1.2.0 <br>
 Product Vendor: NetApp <br>
 Product Name: NetApp Ransomware Resilience <br>
 Minimum Product Version: 7.0.0
@@ -25,6 +25,7 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [enrich storage](#action-enrich-storage) - Enrich storage information for a given agent and system <br>
 [take snapshot](#action-take-snapshot) - Take snapshot of a volume <br>
 [volume offline](#action-volume-offline) - Take volume offline <br>
+[volume online](#action-volume-online) - Take volume online <br>
 [check job status](#action-check-job-status) - Check the status of an enrichment job <br>
 [block user](#action-block-user) - Block user from accessing resources protected by Ransomware Resilience <br>
 [unblock user](#action-unblock-user) - Unblock a previously blocked user from accessing resources protected by Ransomware Resilience
@@ -142,7 +143,38 @@ summary.total_objects_successful | numeric | | 1 |
 Take volume offline
 
 Type: **generic** <br>
-Read only: **True**
+Read only: **False**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**volume_id** | required | Volume Id | string | |
+**agent_id** | required | Agent Id | string | |
+**system_id** | required | System Id | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.volume_id | string | | |
+action_result.parameter.agent_id | string | | |
+action_result.parameter.system_id | string | | |
+action_result.data.\*.job_id | string | | |
+action_result.data.\*.status | string | | |
+action_result.data.\*.source | string | | |
+action_result.data.\*.agent_id | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'volume online'
+
+Take volume online
+
+Type: **generic** <br>
+Read only: **False**
 
 #### Action Parameters
 

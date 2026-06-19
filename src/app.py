@@ -37,6 +37,8 @@ from models.job_status.JobStatusParams import JobStatusParams
 from models.job_status.JobStatusOutput import JobStatusOutput
 from models.block_user.BlockUserParams import BlockUserParams
 from models.block_user.BlockUserOutput import BlockUserOutput
+from models.unblock_user.UnblockUserParams import UnblockUserParams
+from models.unblock_user.UnblockUserOutput import UnblockUserOutput
 from asset import Asset
 from config.constants import (
     APP_NAME,
@@ -170,6 +172,20 @@ app.register_action(
     view_template="block_user_results.html",
     params_class=BlockUserParams,
     output_class=BlockUserOutput,
+)
+
+# Register unblock user action
+app.register_action(
+    "actions.unblock_user:unblock_user_handler",
+    name="unblock user",
+    identifier="unblock_user",
+    description="Unblock a previously blocked user from accessing resources protected by Ransomware Resilience",
+    action_type="generic",
+    read_only=False,
+    view_handler="view_handlers.unblock_user_view:render_unblock_user_handler",
+    view_template="unblock_user_results.html",
+    params_class=UnblockUserParams,
+    output_class=UnblockUserOutput,
 )
 
 if __name__ == "__main__":

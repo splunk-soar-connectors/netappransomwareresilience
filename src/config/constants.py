@@ -63,6 +63,7 @@ ENDPOINT_VOLUME_ONLINE = "/storage/take-volume-online"
 ENDPOINT_TAKE_SNAPSHOT = "/storage/take-snapshot"
 ENDPOINT_JOB_STATUS = "/job/status"
 ENDPOINT_BLOCK_USER = "/users/block-user"
+ENDPOINT_UNBLOCK_USER = "/users/unblock-user"
 
 # API Headers
 AUTHORIZATION_HEADER = "Authorization"

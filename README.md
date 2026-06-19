@@ -27,7 +27,8 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [volume offline](#action-volume-offline) - Take volume offline <br>
 [volume online](#action-volume-online) - Take volume online <br>
 [check job status](#action-check-job-status) - Check the status of an enrichment job <br>
-[block user](#action-block-user) - Block user from accessing resources protected by Ransomware Resilience
+[block user](#action-block-user) - Block user from accessing resources protected by Ransomware Resilience <br>
+[unblock user](#action-unblock-user) - Unblock a previously blocked user from accessing resources protected by Ransomware Resilience
 
 ## action: 'test connectivity'
 
@@ -260,6 +261,32 @@ action_result.message | string | | |
 action_result.parameter.user_id | string | | |
 action_result.parameter.user_ips | string | | |
 action_result.parameter.duration | string | | |
+action_result.data.\*.message | string | | |
+summary.total_objects | numeric | | 1 |
+summary.total_objects_successful | numeric | | 1 |
+
+## action: 'unblock user'
+
+Unblock a previously blocked user from accessing resources protected by Ransomware Resilience
+
+Type: **generic** <br>
+Read only: **False**
+
+#### Action Parameters
+
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**user_id** | required | User ID to unblock | string | |
+**user_ips** | required | Client IPs to unblock (required for NFS; optional for CIFS). Comma-separated. | string | |
+
+#### Action Output
+
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string | | success failure |
+action_result.message | string | | |
+action_result.parameter.user_id | string | | |
+action_result.parameter.user_ips | string | | |
 action_result.data.\*.message | string | | |
 summary.total_objects | numeric | | 1 |
 summary.total_objects_successful | numeric | | 1 |

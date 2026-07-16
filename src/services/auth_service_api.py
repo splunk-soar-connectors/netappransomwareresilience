@@ -60,7 +60,6 @@ def get_oauth_token_api(asset: Asset) -> str:
         token = flow.get_token().access_token
 
         logger.info("get_oauth_token: Successfully retrieved OAuth token")
-        logger.debug(f"get_oauth_token: access_token: {token}")
 
         return token
 

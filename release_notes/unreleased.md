@@ -1,3 +1,3 @@
 **Unreleased**
 
-* Chore: prepare the ESPM-5228 vulnerability remediation.
+* Security: Stop writing OAuth access tokens to connector debug logs.

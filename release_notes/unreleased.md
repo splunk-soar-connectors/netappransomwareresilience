@@ -1,1 +1,3 @@
 **Unreleased**
+
+* Security: Stop writing OAuth access tokens to connector debug logs.

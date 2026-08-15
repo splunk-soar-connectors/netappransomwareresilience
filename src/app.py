@@ -88,6 +88,7 @@ app.register_action(
     view_template="enrich_ip_results.html",
     params_class=EnrichIpParams,
     output_class=EnrichIpOutput,
+    read_only=True,
 )
 
 # Register enrich storage action
